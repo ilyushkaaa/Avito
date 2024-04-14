@@ -1,3 +1,6 @@
+//go:build integration
+// +build integration
+
 package banner
 
 import (
@@ -52,10 +55,6 @@ func TestUpdateBanner(t *testing.T) {
 			tf.del.UpdateBanner(w, r)
 		})).ServeHTTP(respWriter, request)
 		resp := respWriter.Result()
-		_, err := io.ReadAll(resp.Body)
-
-		require.NoError(t, err)
-		defer resp.Body.Close()
 
 		assert.Equal(t, http.StatusNotFound, resp.StatusCode)
 	})
@@ -73,10 +72,6 @@ func TestUpdateBanner(t *testing.T) {
 			tf.del.UpdateBanner(w, r)
 		})).ServeHTTP(respWriter, request)
 		resp := respWriter.Result()
-		_, err := io.ReadAll(resp.Body)
-
-		require.NoError(t, err)
-		defer resp.Body.Close()
 
 		assert.Equal(t, http.StatusOK, resp.StatusCode)
 	})

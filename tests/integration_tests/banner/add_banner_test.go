@@ -1,3 +1,6 @@
+//go:build integration
+// +build integration
+
 package banner
 
 import (
@@ -58,10 +61,6 @@ func TestAddBanner(t *testing.T) {
 			tf.del.AddBanner(w, r)
 		})).ServeHTTP(respWriter, request)
 		resp := respWriter.Result()
-		_, err := io.ReadAll(resp.Body)
-
-		require.NoError(t, err)
-		defer resp.Body.Close()
 
 		assert.Equal(t, http.StatusCreated, resp.StatusCode)
 	})

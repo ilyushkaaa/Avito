@@ -1,14 +1,15 @@
+//go:build integration
+// +build integration
+
 package banner
 
 import (
-	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
 	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 func TestDeleteBanner(t *testing.T) {
@@ -27,10 +28,6 @@ func TestDeleteBanner(t *testing.T) {
 			tf.del.DeleteBanner(w, r)
 		})).ServeHTTP(respWriter, request)
 		resp := respWriter.Result()
-		_, err := io.ReadAll(resp.Body)
-
-		require.NoError(t, err)
-		defer resp.Body.Close()
 
 		assert.Equal(t, http.StatusNotFound, resp.StatusCode)
 	})
@@ -47,10 +44,6 @@ func TestDeleteBanner(t *testing.T) {
 			tf.del.DeleteBanner(w, r)
 		})).ServeHTTP(respWriter, request)
 		resp := respWriter.Result()
-		_, err := io.ReadAll(resp.Body)
-
-		require.NoError(t, err)
-		defer resp.Body.Close()
 
 		assert.Equal(t, http.StatusNoContent, resp.StatusCode)
 	})

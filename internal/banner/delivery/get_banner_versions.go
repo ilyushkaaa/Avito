@@ -43,7 +43,7 @@ func (d *BannerDelivery) GetBannerVersions(w http.ResponseWriter, r *http.Reques
 	bannerVersions, err := d.service.GetBannerVersions(r.Context(), bannerIDInt)
 	if err != nil {
 		if errors.Is(err, storage.ErrBannerNotFound) {
-			d.logger.Errorf("no banners with id = %d", bannerIDInt)
+			d.logger.Errorf("no banner versions with id = %d", bannerIDInt)
 			w.WriteHeader(http.StatusNotFound)
 			return
 		}
