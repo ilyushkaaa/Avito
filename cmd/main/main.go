@@ -32,7 +32,7 @@ func main() {
 			log.Printf("error in logger sync: %v", err)
 		}
 	}()
-	//err = godotenv.Load(".env")
+	//err = godotenv.Load(".env.testing")
 	//if err != nil {
 	//	logger.Fatalf("error in getting env: %s", err)
 	//}
