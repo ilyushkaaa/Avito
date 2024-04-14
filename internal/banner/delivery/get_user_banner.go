@@ -58,7 +58,7 @@ func (d *BannerDelivery) GetUserBanner(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	banner, err := d.service.GetUserBanner(r.Context(), featureIDInt, tagIDInt, useLastVersionBool)
+	bannerContent, err := d.service.GetUserBanner(r.Context(), featureIDInt, tagIDInt, useLastVersionBool)
 	if err != nil {
 		if errors.Is(err, storage.ErrBannerNotFound) {
 			d.logger.Errorf("no banners with feature id = %d and tag id = %d", featureIDInt, tagIDInt)
@@ -75,6 +75,6 @@ func (d *BannerDelivery) GetUserBanner(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	content := dto.BannerForUser{Content: banner.Content}
+	content := dto.BannerForUser{Content: bannerContent}
 	response.WriteResponse(w, content, http.StatusOK, d.logger)
 }

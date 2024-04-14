@@ -60,12 +60,17 @@ curl -X POST "http://127.0.0.1:8080/banner" -H "Content-Type: application/json" 
 ```
 
 ```bash
-curl -X PATCH "http://127.0.0.1:8080/banner/9" -H "Content-Type: application/json" -H "Token: admin_token" -d '{
+curl -X PATCH "http://127.0.0.1:8080/banner/10" -H "Content-Type: application/json" -H "Token: admin_token" -d '{
   "tag_ids": [31, 22],
   "feature_id": 9,
   "content": "{\"title6\": \"new_title7\", \"text3\": \"new_text3\", \"url\": \"new_url2\"}"
 }'
 ```
+
+curl -X PATCH "http://127.0.0.1:8080/banner/10" -H "Content-Type: application/json" -H "Token: admin_token" -d '{
+"content": "{\"title6\": \"new_title7\", \"text3\": \"new_text3\", \"url\": \"new_url2\"}",
+"is_active": true
+}'
 
 ```bash
 curl -X DELETE "http://127.0.0.1:8080/banner/6" -H "Token: admin_token"

@@ -10,6 +10,7 @@ import (
 	serviceBanner "github.com/ilyushkaaa/banner-service/internal/banner/service"
 	storageBanner "github.com/ilyushkaaa/banner-service/internal/banner/storage/database"
 	"github.com/ilyushkaaa/banner-service/internal/infrastructure/database/postgres/database"
+	"github.com/ilyushkaaa/banner-service/internal/infrastructure/database/redis"
 	"github.com/ilyushkaaa/banner-service/internal/infrastructure/kafka"
 	"github.com/ilyushkaaa/banner-service/internal/infrastructure/kafka/consumer"
 	"github.com/ilyushkaaa/banner-service/internal/middleware"
@@ -48,6 +49,17 @@ func main() {
 		}
 	}()
 
+	redisConn, err := redis.Init()
+	if err != nil {
+		logger.Fatalf("error on connection to redis: %v", err)
+	}
+	defer func() {
+		err = redisConn.Close()
+		if err != nil {
+			logger.Infof("error on redis close: %s", err.Error())
+		}
+	}()
+
 	cfg, err := kafka.NewConfig()
 	if err != nil {
 		logger.Fatalf("error in kafka config init: %v", err)
@@ -59,7 +71,7 @@ func main() {
 		}
 	}()
 
-	stBanner := storageBanner.New(db, logger)
+	stBanner := storageBanner.New(db, redisConn, logger)
 	svBanner := serviceBanner.New(stBanner, cfg.Producer)
 	d := delivery.New(svBanner, logger)
 

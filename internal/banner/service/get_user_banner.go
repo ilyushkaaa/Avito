@@ -2,26 +2,30 @@ package service
 
 import (
 	"context"
+	"fmt"
 
-	"github.com/ilyushkaaa/banner-service/internal/banner/model"
+	"github.com/ilyushkaaa/banner-service/internal/banner/storage/database/dto"
 )
 
-func (s *BannerServiceApp) GetUserBanner(ctx context.Context, featureID, tagID uint64, lastVersion bool) (*model.Banner, error) {
+func (s *BannerServiceApp) GetUserBanner(ctx context.Context, featureID, tagID uint64, lastVersion bool) (string, error) {
+	if !lastVersion {
+		bannerCache, err := s.storage.GetBannerFromCache(featureID, tagID)
+		fmt.Println(bannerCache)
+		if err == nil && bannerCache != nil {
+			return bannerCache.Content, bannerCache.Error
+		}
+	}
+
 	banner, err := s.storage.GetBannerByFeatureTag(ctx, featureID, tagID)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
+
 	if !banner.IsActive {
-		return nil, ErrBannerIsInactive
+		return "", ErrBannerIsInactive
 	}
 
-	feature, tags, err := s.storage.GetBannerFeatureTags(ctx, banner.ID)
-	if err != nil {
-		return nil, err
-	}
+	go s.storage.SaveBannerToCache(dto.BannerFromCache{Content: banner.Content, Error: err}, featureID, tagID)
 
-	banner.FeatureID = feature
-	banner.TagIDs = tags
-
-	return banner, nil
+	return banner.Content, nil
 }
