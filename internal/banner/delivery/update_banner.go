@@ -21,7 +21,7 @@ func (d *BannerDelivery) UpdateBanner(w http.ResponseWriter, r *http.Request) {
 		response.WriteResponse(w, response.Error{Err: response.ErrInternal.Error()}, http.StatusInternalServerError, d.logger)
 		return
 	}
-	if user.Role != "admin" {
+	if user.Role != adminRole {
 		d.logger.Errorf("user %d has got no access dor updating banner", user.TagID)
 		w.WriteHeader(http.StatusForbidden)
 		return

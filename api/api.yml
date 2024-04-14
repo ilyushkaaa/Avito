@@ -388,3 +388,37 @@ paths:
                 properties:
                   error:
                     type: string
+  /banner/versions{id}:
+    post:
+      summary: Откат к предыдущей версии баннера
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            description: Идентификатор версии
+        - in: header
+          name: token
+          description: Токен админа
+          schema:
+            type: string
+            example: "admin_token"
+      responses:
+        '201':
+          description: Откат произошёл успешно
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Пользователь не имеет доступа
+        '404':
+          description: Версия не найден
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string

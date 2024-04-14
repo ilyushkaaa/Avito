@@ -11,6 +11,8 @@ import (
 	"github.com/ilyushkaaa/banner-service/internal/pkg/response"
 )
 
+const adminRole = "admin"
+
 func (d *BannerDelivery) AddBanner(w http.ResponseWriter, r *http.Request) {
 	user, err := getUserFromContext(r.Context())
 	if err != nil {
@@ -18,7 +20,7 @@ func (d *BannerDelivery) AddBanner(w http.ResponseWriter, r *http.Request) {
 		response.WriteResponse(w, response.Error{Err: response.ErrInternal.Error()}, http.StatusInternalServerError, d.logger)
 		return
 	}
-	if user.Role != "admin" {
+	if user.Role != adminRole {
 		d.logger.Errorf("user %d has got no access dor adding banner", user.TagID)
 		w.WriteHeader(http.StatusForbidden)
 		return

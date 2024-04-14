@@ -18,7 +18,7 @@ func (d *BannerDelivery) GetBannerVersions(w http.ResponseWriter, r *http.Reques
 		response.WriteResponse(w, response.Error{Err: response.ErrInternal.Error()}, http.StatusInternalServerError, d.logger)
 		return
 	}
-	if user.Role != "admin" {
+	if user.Role != adminRole {
 		d.logger.Errorf("user %d has got no access for getting banners", user.TagID)
 		w.WriteHeader(http.StatusForbidden)
 		return

@@ -4,6 +4,6 @@ import (
 	"context"
 )
 
-func (s *BannerServiceApp) DeleteBanner(ctx context.Context, ID uint64) error {
-	return s.storage.DeleteBanner(ctx, ID)
+func (s *BannerServiceApp) DeleteBanner(ctx context.Context, id uint64) error {
+	return s.storage.DeleteBanner(ctx, id)
 }

@@ -7,10 +7,10 @@ type Filter struct {
 	Limit     uint64
 }
 
-func New(featureID, tagId, offset, limit uint64) Filter {
+func New(featureID, tagID, offset, limit uint64) Filter {
 	return Filter{
 		FeatureID: featureID,
-		TagID:     tagId,
+		TagID:     tagID,
 		Offset:    offset,
 		Limit:     limit,
 	}
