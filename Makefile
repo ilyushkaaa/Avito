@@ -2,7 +2,7 @@ include .env
 export
 
 
-MIGRATION_FOLDER=$(CURDIR)/internal/database/postgres/migrations
+MIGRATION_FOLDER=$(CURDIR)/internal/infrastructure/database/postgres/migrations
 
 .PHONY: app_start
 app_start:
