@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/ilyushkaaa/banner-service/internal/banner/storage/database/dto"
 )
@@ -10,7 +9,6 @@ import (
 func (s *BannerServiceApp) GetUserBanner(ctx context.Context, featureID, tagID uint64, lastVersion bool) (string, error) {
 	if !lastVersion {
 		bannerCache, err := s.storage.GetBannerFromCache(featureID, tagID)
-		fmt.Println(bannerCache)
 		if err == nil && bannerCache != nil {
 			return bannerCache.Content, bannerCache.Error
 		}
@@ -25,7 +23,9 @@ func (s *BannerServiceApp) GetUserBanner(ctx context.Context, featureID, tagID u
 		return "", ErrBannerIsInactive
 	}
 
-	go s.storage.SaveBannerToCache(dto.BannerFromCache{Content: banner.Content, Error: err}, featureID, tagID)
+	if !lastVersion {
+		go s.storage.SaveBannerToCache(dto.BannerFromCache{Content: banner.Content, Error: err}, featureID, tagID)
+	}
 
 	return banner.Content, nil
 }

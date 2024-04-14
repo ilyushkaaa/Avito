@@ -11,6 +11,11 @@ make app_start
 make integration_tests_run
 ```
 
+### Запуск программы, имитирующей 1k PPS
+```bash
+make client_start
+```
+
 ## Примеры запросов curl
 
 
