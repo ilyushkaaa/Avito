@@ -1,23 +1,26 @@
 [
   {
-    "version_id": 4,
-    "banner_id": 9,
-    "content": "{\"title3\": \"new_title3\", \"text3\": \"new_text3\", \"url\": \"new_url2\"}",
-    "updated_at": "2024-04-13T23:22:35.045936Z",
-    "is_active": false
+    "content": "{\"title\": \"some_title1\", \"text\": \"some_text1\", \"url\": \"some_url1\"}",
+    "created_at": "0001-01-01T01:00:00Z",
+    "feature_id": 1,
+    "id": 1,
+    "is_active": true,
+    "tag_ids": [
+      1,
+      2
+    ],
+    "updated_at": "0001-01-01T01:00:00Z"
   },
   {
-    "version_id": 5,
-    "banner_id": 9,
-    "content": "{\"title4\": \"new_title4\", \"text3\": \"new_text3\", \"url\": \"new_url2\"}",
-    "updated_at": "2024-04-13T23:23:03.639014Z",
-    "is_active": false
-  },
-  {
-    "version_id": 6,
-    "banner_id": 9,
-    "content": "{\"title5\": \"new_title5\", \"text3\": \"new_text3\", \"url\": \"new_url2\"}",
-    "updated_at": "2024-04-13T23:23:49.307386Z",
-    "is_active": false
+    "content": "{\"title\": \"some_title2\", \"text\": \"some_text2\", \"url\": \"some_url2\"}",
+    "created_at": "0001-01-01T02:00:00Z",
+    "feature_id": 2,
+    "id": 2,
+    "is_active": false,
+    "tag_ids": [
+      1,
+      4
+    ],
+    "updated_at": "0001-01-01T02:00:00Z"
   }
 ]

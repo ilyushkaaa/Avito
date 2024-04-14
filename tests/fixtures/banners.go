@@ -63,6 +63,6 @@ func (b *BannerBuilder) Valid1() *BannerBuilder {
 }
 
 func (b *BannerBuilder) Valid2() *BannerBuilder {
-	return Banner().ID(states.ID2).TagIDs([]uint64{states.TagID3, states.TagID4}).FeatureID(states.FeatureID2).Content(states.Content2).
+	return Banner().ID(states.ID2).TagIDs([]uint64{states.TagID1, states.TagID4}).FeatureID(states.FeatureID2).Content(states.Content2).
 		CreatedAt(time.Time{}.Add(time.Hour * 2)).UpdatedAt(time.Time{}.Add(time.Hour * 2)).IsActive(states.IsActive2)
 }

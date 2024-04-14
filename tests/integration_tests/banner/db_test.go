@@ -17,13 +17,14 @@ func setUp(t *testing.T, db database.Database, tableNames []string) {
 	ctx := context.Background()
 
 	for _, tn := range tableNames {
-		err := truncateTable(ctx, db, tn)
+		err := deleteData(ctx, db, tn)
 		require.NoError(t, err)
 	}
+
 }
 
-func truncateTable(ctx context.Context, db database.Database, tableName string) error {
-	_, err := db.Exec(ctx, fmt.Sprintf("TRUNCATE table %s RESTART IDENTITY", tableName))
+func deleteData(ctx context.Context, db database.Database, tableName string) error {
+	_, err := db.Exec(ctx, fmt.Sprintf("DELETE FROM %s", tableName))
 	return err
 }
 
@@ -53,9 +54,9 @@ func insertBanner(t *testing.T, db database.Database, banner model.Banner) {
 	t.Helper()
 	ctx := context.Background()
 	_, err := db.Exec(ctx,
-		`INSERT INTO banners (content, created_at, updated_at, is_active)
-              VALUES ($1, $2, $3, $4) RETURNING id`,
-		banner.Content, banner.CreatedAt, banner.UpdatedAt, banner.IsActive)
+		`INSERT INTO banners (id, content, created_at, updated_at, is_active)
+              VALUES ($1, $2, $3, $4, $5)`,
+		banner.ID, banner.Content, banner.CreatedAt, banner.UpdatedAt, banner.IsActive)
 	require.NoError(t, err)
 
 	for _, tag := range banner.TagIDs {
@@ -71,15 +72,15 @@ func fillUsers(t *testing.T, db database.Database) {
 	t.Helper()
 	ctx := context.Background()
 	_, err := db.Exec(ctx,
-		`INSERT INTO users (token, role)
-              VALUES ($1, $2)`,
-		states.TokenUser, states.RoleUser)
+		`INSERT INTO users (tag_id, token, role)
+              VALUES ($1, $2, $3)`,
+		states.TagID1, states.TokenUser, states.RoleUser)
 	require.NoError(t, err)
 
 	_, err = db.Exec(ctx,
-		`INSERT INTO users (token, role)
-              VALUES ($1, $2)`,
-		states.TokenAdmin, states.RoleAdmin)
+		`INSERT INTO users (tag_id, token, role)
+              VALUES ($1, $2, $3)`,
+		states.TagID2, states.TokenAdmin, states.RoleAdmin)
 	require.NoError(t, err)
 
 }
@@ -89,7 +90,7 @@ func insertPreviousBanner(t *testing.T, db database.Database, banner model.Banne
 	ctx := context.Background()
 	_, err := db.Exec(ctx,
 		`INSERT INTO previous_banners (content, banner_id, updated_at, is_active)
-              VALUES ($1, $2, $3, $4) RETURNING id`,
+              VALUES ($1, $2, $3, $4)`,
 		banner.Content, banner.ID, banner.UpdatedAt, banner.IsActive)
 	require.NoError(t, err)
 }
