@@ -9,7 +9,9 @@ import (
 	"github.com/ilyushkaaa/banner-service/internal/banner/delivery"
 	serviceBanner "github.com/ilyushkaaa/banner-service/internal/banner/service"
 	storageBanner "github.com/ilyushkaaa/banner-service/internal/banner/storage/database"
-	"github.com/ilyushkaaa/banner-service/internal/database/postgres/database"
+	"github.com/ilyushkaaa/banner-service/internal/infrastructure/database/postgres/database"
+	"github.com/ilyushkaaa/banner-service/internal/infrastructure/kafka"
+	"github.com/ilyushkaaa/banner-service/internal/infrastructure/kafka/consumer"
 	"github.com/ilyushkaaa/banner-service/internal/middleware"
 	"github.com/ilyushkaaa/banner-service/internal/routes"
 	serviceUser "github.com/ilyushkaaa/banner-service/internal/user/service"
@@ -45,8 +47,20 @@ func main() {
 			logger.Errorf("error in closing db")
 		}
 	}()
+
+	cfg, err := kafka.NewConfig()
+	if err != nil {
+		logger.Fatalf("error in kafka config init: %v", err)
+	}
+	defer func() {
+		err = cfg.Close()
+		if err != nil {
+			logger.Errorf("error in closing sync kafka producer: %v", err)
+		}
+	}()
+
 	stBanner := storageBanner.New(db, logger)
-	svBanner := serviceBanner.New(stBanner)
+	svBanner := serviceBanner.New(stBanner, cfg.Producer)
 	d := delivery.New(svBanner, logger)
 
 	stUser := storageUser.New(db)
@@ -54,6 +68,13 @@ func main() {
 
 	mw := middleware.New(svUser, logger)
 	router := routes.GetRouter(d, mw)
+
+	go func() {
+		err = consumer.Run(ctx, cfg, stBanner, logger)
+		if err != nil {
+			logger.Errorf("error in consumer running")
+		}
+	}()
 
 	port := os.Getenv("APP_PORT")
 	addr := ":" + port

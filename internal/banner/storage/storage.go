@@ -17,4 +17,5 @@ type BannerStorage interface {
 	DeleteBanner(ctx context.Context, ID uint64) error
 	GetBannerVersions(ctx context.Context, ID uint64) ([]model.BannerVersion, error)
 	ApplyBannerVersion(ctx context.Context, versionID uint64) error
+	DeleteBannersByFeatureTag(ctx context.Context, featureID, tagID uint64) error
 }

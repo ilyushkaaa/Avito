@@ -3,7 +3,6 @@ package middleware
 import (
 	"context"
 	"errors"
-	"fmt"
 	"net/http"
 
 	"github.com/ilyushkaaa/banner-service/internal/banner/delivery"
@@ -13,8 +12,7 @@ import (
 
 func (mw *Middleware) Auth(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		token := r.Header.Get("Authorization")
-		fmt.Println(token)
+		token := r.Header.Get("Token")
 		user, err := mw.userService.GetUserByToken(r.Context(), token)
 		if err != nil {
 			if errors.Is(err, storage.ErrUserNotFound) {
@@ -26,7 +24,6 @@ func (mw *Middleware) Auth(next http.Handler) http.Handler {
 			response.WriteResponse(w, response.Error{Err: response.ErrInternal.Error()}, http.StatusInternalServerError, mw.logger)
 			return
 		}
-		fmt.Println(user)
 		ctx := r.Context()
 		ctx = context.WithValue(ctx, delivery.UserKey, user)
 		next.ServeHTTP(w, r.WithContext(ctx))

@@ -5,6 +5,7 @@ import (
 
 	"github.com/ilyushkaaa/banner-service/internal/banner/filter"
 	"github.com/ilyushkaaa/banner-service/internal/banner/model"
+	"github.com/ilyushkaaa/banner-service/internal/banner/service/workers"
 	"github.com/ilyushkaaa/banner-service/internal/banner/storage"
 )
 
@@ -16,12 +17,17 @@ type BannerService interface {
 	DeleteBanner(ctx context.Context, ID uint64) error
 	GetBannerVersions(ctx context.Context, ID uint64) ([]model.BannerVersion, error)
 	ApplyBannerVersion(ctx context.Context, versionID uint64) error
+	DeleteBannersByFeatureTag(featureID, tagID uint64) workers.SendMessageResult
 }
 
 type BannerServiceApp struct {
-	storage storage.BannerStorage
+	storage        storage.BannerStorage
+	deleteProducer *workers.DeleteBannersProducer
 }
 
-func New(storage storage.BannerStorage) *BannerServiceApp {
-	return &BannerServiceApp{storage: storage}
+func New(storage storage.BannerStorage, deleteProducer *workers.DeleteBannersProducer) *BannerServiceApp {
+	return &BannerServiceApp{
+		storage:        storage,
+		deleteProducer: deleteProducer,
+	}
 }

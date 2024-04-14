@@ -23,6 +23,7 @@ func assignRoutes(router *mux.Router, handlers *delivery.BannerDelivery) {
 	router.HandleFunc("/banner/{id}", handlers.DeleteBanner).Methods(http.MethodDelete)
 	router.HandleFunc("/banner/{id}/versions", handlers.GetBannerVersions).Methods(http.MethodGet)
 	router.HandleFunc("/banner/versions/{id}", handlers.ApplyBannerVersion).Methods(http.MethodPost)
+	router.HandleFunc("/banners", handlers.DeleteBannersByFeatureTag).Methods(http.MethodDelete)
 
 }
 

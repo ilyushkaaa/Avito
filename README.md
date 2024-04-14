@@ -43,15 +43,15 @@
 3. Описанные в README.md вопросы/проблемы, с которыми столкнулись,  и ваша логика их решений (если требуется)
 
 ```bash
-curl -X GET "http://127.0.0.1:8080/user_banner?tag_id=1&feature_id=8&use_last_revision=true" -H "Authorization: user_token"
+curl -X GET "http://127.0.0.1:8080/user_banner?tag_id=1&feature_id=8&use_last_revision=true" -H "Token: user_token"
 ```
 
 ```bash
-curl -X GET "http://127.0.0.1:8080/banner?tag_id=123&limit=1&offset=3" -H "Authorization: admin_token"
+curl -X GET "http://127.0.0.1:8080/banner?tag_id=123&limit=1&offset=3" -H "Token: admin_token"
 ```
 
 ```bash
-curl -X POST "http://127.0.0.1:8080/banner" -H "Content-Type: application/json" -H "Authorization: admin_token" -d '{
+curl -X POST "http://127.0.0.1:8080/banner" -H "Content-Type: application/json" -H "Token: admin_token" -d '{
   "tag_ids": [123, 12, 1],
   "feature_id": 8,
   "content": "{\"title\": \"some_title\", \"text\": \"some_text\", \"url\": \"some_url\"}",
@@ -60,7 +60,7 @@ curl -X POST "http://127.0.0.1:8080/banner" -H "Content-Type: application/json" 
 ```
 
 ```bash
-curl -X PATCH "http://127.0.0.1:8080/banner/9" -H "Content-Type: application/json" -H "Authorization: admin_token" -d '{
+curl -X PATCH "http://127.0.0.1:8080/banner/9" -H "Content-Type: application/json" -H "Token: admin_token" -d '{
   "tag_ids": [31, 22],
   "feature_id": 9,
   "content": "{\"title6\": \"new_title7\", \"text3\": \"new_text3\", \"url\": \"new_url2\"}"
@@ -68,14 +68,18 @@ curl -X PATCH "http://127.0.0.1:8080/banner/9" -H "Content-Type: application/jso
 ```
 
 ```bash
-curl -X DELETE "http://127.0.0.1:8080/banner/6" -H "Authorization: admin_token"
+curl -X DELETE "http://127.0.0.1:8080/banner/6" -H "Token: admin_token"
 ```
 
 ```bash
-curl -X GET "http://127.0.0.1:8080/banner/9/versions" -H "Authorization: admin_token"
+curl -X GET "http://127.0.0.1:8080/banner/9/versions" -H "Token: admin_token"
 ```
 
 
 ```bash
-curl -X POST "http://127.0.0.1:8080/banner/versions/5" -H "Authorization: admin_token"
+curl -X POST "http://127.0.0.1:8080/banner/versions/5" -H "Token: admin_token"
+```
+
+```bash
+curl -X DELETE "http://127.0.0.1:8080/banners?feature_id=9" -H "Token: admin_token"
 ```

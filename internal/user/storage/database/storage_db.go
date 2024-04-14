@@ -1,7 +1,7 @@
 package storage
 
 import (
-	"github.com/ilyushkaaa/banner-service/internal/database/postgres/database"
+	"github.com/ilyushkaaa/banner-service/internal/infrastructure/database/postgres/database"
 )
 
 type UserStorageDB struct {

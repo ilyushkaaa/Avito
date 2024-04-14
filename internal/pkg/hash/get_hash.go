@@ -3,7 +3,6 @@ package hash
 import (
 	"crypto/sha256"
 	"encoding/hex"
-	"fmt"
 )
 
 func GetHash(input string) (string, error) {
@@ -14,6 +13,5 @@ func GetHash(input string) (string, error) {
 	}
 	hashBytes := hash.Sum(nil)
 	output := hex.EncodeToString(hashBytes)
-	fmt.Println(output)
 	return output, nil
 }
